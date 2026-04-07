@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:budget_rpg/models/random_event.dart';
 import 'package:budget_rpg/router/app_router.dart';
 import 'package:budget_rpg/state/game_state.dart';
+import 'package:budget_rpg/widgets/effect_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,7 @@ class EventScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(event.description),
             const SizedBox(height: 8),
-            _EffectChip(event),
+            EffectChip(event),
             const Spacer(),
             FilledButton(
               onPressed: () {
@@ -37,21 +38,6 @@ class EventScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _EffectChip extends StatelessWidget {
-  const _EffectChip(this.event);
-  final RandomEvent event;
-
-  @override
-  Widget build(BuildContext context) {
-    final money = event.moneyDelta;
-    final sign = money >= 0 ? '+' : '';
-    final color = money >= 0 ? Colors.green : Colors.red;
-    return Chip(
-      label: Text('$sign$money ₽', style: TextStyle(color: color)),
     );
   }
 }

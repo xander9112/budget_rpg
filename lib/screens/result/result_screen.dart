@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:budget_rpg/models/character.dart';
 import 'package:budget_rpg/router/app_router.dart';
 import 'package:budget_rpg/state/game_state.dart';
+import 'package:budget_rpg/widgets/result_row.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,15 +36,15 @@ class ResultScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              _ResultRow('💰 Итоговые деньги', '${state.money} ₽'),
-              _ResultRow(
+              ResultRow('💰 Итоговые деньги', '${state.money} ₽'),
+              ResultRow(
                 '🎯 Цель',
                 '${Character.goal} ₽ — ${won ? "достигнута ✅" : "не достигнута ❌"}',
               ),
-              _ResultRow('😊 Счастье', '${state.happiness}'),
-              _ResultRow('⚡ Энергия', '${state.energy}'),
-              _ResultRow('🧠 Фин. IQ', '${state.financialIQ}'),
-              _ResultRow('⭐ Очки', '${state.points}'),
+              ResultRow('😊 Счастье', '${state.happiness}'),
+              ResultRow('⚡ Энергия', '${state.energy}'),
+              ResultRow('🧠 Фин. IQ', '${state.financialIQ}'),
+              ResultRow('⭐ Очки', '${state.points}'),
               const Spacer(),
               FilledButton(
                 onPressed: () {
@@ -64,29 +65,5 @@ class ResultScreen extends StatelessWidget {
     if (s.happiness == 0) return 'Ты потерял всю радость жизни 😞';
     if (s.energy == 0) return 'У тебя закончились силы 😴';
     return 'Игра окончена';
-  }
-}
-
-class _ResultRow extends StatelessWidget {
-  const _ResultRow(this.label, this.value);
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label),
-          Flexible(
-            child: Text(value,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.end),
-          ),
-        ],
-      ),
-    );
   }
 }
