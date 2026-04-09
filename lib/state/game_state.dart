@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:budget_rpg/data/events_data.dart';
 import 'package:budget_rpg/models/character.dart';
 import 'package:budget_rpg/models/game_action.dart';
 import 'package:budget_rpg/models/random_event.dart';
@@ -56,6 +59,8 @@ class GameState extends ChangeNotifier {
   /// true, если игра завершена (победа или поражение).
   bool get isGameOver => isWin || isLose;
 
+  final _rng = Random();
+
   // ---------------------------------------------------------------------------
   // TODO: Реализовать методы изменения состояния
   // ---------------------------------------------------------------------------
@@ -64,8 +69,15 @@ class GameState extends ChangeNotifier {
   /// Вероятность события — 30%. Возвращает событие или null.
   /// После изменения вызвать notifyListeners().
   RandomEvent? rollRandomEvent() {
-    // TODO: реализовать
-    throw UnimplementedError();
+    if (_rng.nextDouble() < 0.30) {
+      _pendingEvent = kAllEvents[_rng.nextInt(kAllEvents.length)];
+    } else {
+      _pendingEvent = null;
+    }
+
+    notifyListeners();
+
+    return _pendingEvent;
   }
 
   /// Применяет эффекты случайного [event] к персонажу.
