@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:budget_rpg/models/random_event.dart';
+import 'package:budget_rpg/router/app_router.dart';
+import 'package:budget_rpg/state/game_state.dart';
+import 'package:budget_rpg/widgets/effect_chip.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class EventScreen extends StatelessWidget {
@@ -10,12 +14,35 @@ class EventScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: отобразить event.title, event.description
-    // TODO: показать эффект события (moneyDelta) с цветом: зелёный/красный
-    // TODO: кнопка «Принять и продолжить» — applyEvent(event), затем ActionsRoute
     return Scaffold(
       appBar: AppBar(title: const Text('Событие')),
-      body: Center(child: Text('TODO: Event — ${event.title}')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(event.title, style: Theme.of(context).textTheme.headlineSmall),
+
+            const SizedBox(height: 12),
+
+            Text(event.description),
+
+            const SizedBox(height: 8),
+
+            EffectChip(event),
+
+            const Spacer(),
+
+            FilledButton(
+              onPressed: () {
+                context.read<GameState>().applyEvent(event);
+                context.router.replace(const ActionsRoute());
+              },
+              child: const Text('Принять и продолжить'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

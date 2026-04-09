@@ -15,7 +15,7 @@ import 'package:flutter/foundation.dart';
 class GameState extends ChangeNotifier {
   GameState() : _char = Character.initial();
 
-  final Character _char;
+  Character _char;
   RandomEvent? _pendingEvent;
 
   // ---------------------------------------------------------------------------
@@ -62,8 +62,6 @@ class GameState extends ChangeNotifier {
   final _rng = Random();
 
   // ---------------------------------------------------------------------------
-  // TODO: Реализовать методы изменения состояния
-  // ---------------------------------------------------------------------------
 
   /// Бросает «кубик» на случайное событие в начале нового дня.
   /// Вероятность события — 30%. Возвращает событие или null.
@@ -83,21 +81,36 @@ class GameState extends ChangeNotifier {
   /// Применяет эффекты случайного [event] к персонажу.
   /// Использовать _char.applyDeltas(...). Сбросить _pendingEvent.
   void applyEvent(RandomEvent event) {
-    // TODO: реализовать
-    throw UnimplementedError();
+    _char = _char.applyDeltas(
+      moneyDelta: event.moneyDelta,
+      happinessDelta: event.happinessDelta,
+      energyDelta: event.energyDelta,
+    );
+
+    _pendingEvent = null;
+
+    notifyListeners();
   }
 
   /// Применяет выбранное игроком [action] к персонажу.
   /// Использовать _char.applyAction(action).
   /// Бонус: +5 очков если баланс после действия остался положительным.
   void applyAction(GameAction action) {
-    // TODO: реализовать
-    throw UnimplementedError();
+    _char = _char.applyAction(action);
+
+    // Положительный баланс после действия — +5 очков
+    if (_char.money > 0) {
+      _char = _char.copyWith(points: _char.points + 5);
+    }
+
+    notifyListeners();
   }
 
   /// Сбрасывает игру в начальное состояние.
   void resetGame() {
-    // TODO: реализовать
-    throw UnimplementedError();
+    _char = Character.initial();
+    _pendingEvent = null;
+
+    notifyListeners();
   }
 }

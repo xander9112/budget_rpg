@@ -22,6 +22,14 @@ class DashboardScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 32.0),
+              child: Text(
+                'День: ${state.day} / 30',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+
             UiInfoRow(title: 'Деньги', value: '${state.money}'),
             UiInfoRow(title: 'Цель', value: '${Character.goal}'),
             UiInfoRow(title: 'Счастье', value: '${state.happiness}'),
@@ -42,10 +50,10 @@ class DashboardScreen extends StatelessWidget {
   void _onPressed(BuildContext context, GameState state) {
     final event = state.rollRandomEvent();
 
-    // if (event != null) {
-    //   context.replaceRoute(EventRoute(event: event));
-    // } else {
-    context.replaceRoute(ActionsRoute());
-    // }
+    if (event != null) {
+      context.replaceRoute(EventRoute(event: event));
+    } else {
+      context.replaceRoute(ActionsRoute());
+    }
   }
 }
